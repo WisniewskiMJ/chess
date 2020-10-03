@@ -31,7 +31,7 @@ class Board
   end
 
   def add_piece(pos) 
-    piece = Piece.new(pos)
+    piece = Piece.new(pos, self)
     self[pos] = piece
   end
 
