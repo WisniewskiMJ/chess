@@ -50,5 +50,8 @@ module Slideable
     directions = permutations.select.with_index {|e| e[1] != e[3]}
   end
 
+  def both_dirs
+    directions = diagonal_dirs + horizontal_dirs
+  end
 
 end
