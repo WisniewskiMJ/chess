@@ -1,5 +1,4 @@
-require_relative "piece"
-require_relative "stepable"
+# frozen_string_literal: true
 
 class Knight < Piece
   include Stepable
@@ -11,7 +10,6 @@ class Knight < Piece
   def move_diffs
     step_x = 2
     step_y = 1
-    diffs = [step_x, step_y]
+    [step_x, step_y]
   end
-
 end

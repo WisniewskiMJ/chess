@@ -1,5 +1,7 @@
-require_relative "piece"
-require_relative "slideable"
+# frozen_string_literal: true
+
+require_relative 'piece'
+require_relative 'slideable'
 
 class Queen < Piece
   include Slideable
@@ -11,6 +13,4 @@ class Queen < Piece
   def move_dirs
     both_dirs
   end
-
 end
-

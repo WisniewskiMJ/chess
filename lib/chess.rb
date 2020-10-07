@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+require 'byebug'
+require 'pry'
+require 'singleton'
+require './chess/bishop'
+require './chess/board'
+require './chess/movable'
+require './chess/stepable'
+require './chess/slideable'
+require './chess/king'
+require './chess/knight'
+require './chess/null_piece'
+require './chess/pawn'
+require './chess/piece'
+require './chess/queen'
+require './chess/rook'
