@@ -29,7 +29,13 @@ class Board
   end
 
   def add_piece(pos)
-    piece = Piece.new(pos, self)
+    piece_positions = { Rook => [0, 7], Knight => [1, 6], Bishop => [2, 5], Queen => [3], King => [4] }
+    if pos[0] == 1 || pos[0] == 6
+      piece = Pawn.new(pos, self)
+    elsif piece_positions.each do |piece_class, position|
+            piece = piece_class.new(pos, self) if position.include?(pos[1])
+          end
+    end
     self[pos] = piece
   end
 
@@ -37,7 +43,7 @@ class Board
     pieces = []
     (0..7).each do |x|
       @rows[x].each_with_index do |_field, y|
-        pieces << @rows[x][y] if @rows[x][y].instance_of?(Piece)
+        pieces << @rows[x][y] if @rows[x][y].is_a?(Piece)
       end
     end
     pieces
@@ -45,23 +51,18 @@ class Board
 
   # not in diagram
   def on_chessboard?(pos)
-    if pos[0].negative? || pos [0] > 7 || pos[1].negative? || pos[1] > 7
-      return false
-    end
+    return false if pos[0].negative? || pos [0] > 7 || pos[1].negative? || pos[1] > 7
 
     true
   end
 
   def move_piece(start_pos, end_pos)
-    if !on_chessboard?(start_pos) || self[start_pos].nil?
-      raise 'No piece at starting position'
-    end
-    if !on_chessboard?(end_pos) || !self[end_pos].nil?
-      raise "Can't move to end position"
-    end
+    raise 'No piece at starting position' if !on_chessboard?(start_pos) || self[start_pos].nil?
+    raise "Can't move to end position" if !on_chessboard?(end_pos) || !self[end_pos].nil?
 
     piece = self[start_pos]
     self[start_pos] = nil
     self[end_pos] = piece
+    piece.pos = end_pos
   end
 end

@@ -3,7 +3,7 @@
 require_relative 'board'
 
 class Piece
-  attr_writer :pos
+  attr_accessor :pos
 
   def initialize(pos, board)
     @pos = pos
