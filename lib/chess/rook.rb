@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
-# require_relative 'piece'
-# require_relative 'slideable'
-
 class Rook < Piece
   include Slideable
 
-  def initialize(pos, board)
-    super
+  def set_color
+    (@pos[0]).zero? ? :black : :white
+  end
+
+  def set_symbol
+    @color == :black ? :r : :R
   end
 
   def move_dirs

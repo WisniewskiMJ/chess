@@ -12,15 +12,8 @@ describe 'Board' do
       expect(rows[0].length).to eq(8)
     end
 
-    it 'calls #init_setup' do
-      expect(board).to receive(:init_setup)
-      board.init_setup
-    end
-  end
-
-  describe '#init_setup' do
     it 'populates board with pieces' do
-      rows = board.instance_variable_get(:@rows)
+      rows = board.rows
       expect(rows[0][0]).to be_a(Piece)
       expect(rows[7][7]).to be_a(Piece)
       expect(rows[3][1]).to be_nil
@@ -28,13 +21,8 @@ describe 'Board' do
   end
 
   describe '#[]' do
-    it 'accepts an array representing position on board' do
-      pos = [2, 4]
-      board[pos]
-    end
-
     it 'returns element on board at given position' do
-      rows = board.instance_variable_get(:@rows)
+      rows = board.rows
       rows[4][4] = 'x'
       pos1 = [4, 4]
       expect(board[pos1]).to eq('x')
@@ -43,11 +31,6 @@ describe 'Board' do
 
   describe '#[]=' do
     let(:value) { double('value') }
-    it 'accepts an array and object instance' do
-      pos = [4, 4]
-      board[pos] = value
-    end
-
     it 'sets given board position to given value' do
       pos = [5, 5]
       board[pos] = value
@@ -56,11 +39,6 @@ describe 'Board' do
   end
 
   describe '#add_piece' do
-    it 'accepts position(array) as an argument' do
-      pos = [1, 1]
-      board.add_piece(pos)
-    end
-
     it 'sets a piece at adequate position' do
       pos1 = [0, 0]
       pos2 = [7, 4]
@@ -96,16 +74,12 @@ describe 'Board' do
   end
 
   describe '#move_piece' do
-    let(:pos1) { [0, 2] }
-    let(:pos2) { [2, 4] }
+    let(:pos1) { [1, 2] }
+    let(:pos2) { [3, 4] }
     let(:piece) { double 'piece' }
     before do
       allow(piece).to receive(:pos).and_return(pos2)
       allow(piece).to receive(:pos=)
-    end
-
-    it 'takes two positions (arrays) as arguments' do
-      board.move_piece(pos1, pos2)
     end
 
     it 'raises error if there is no piece at start position' do

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Board
+  attr_reader :rows
+
   def initialize
     @rows = Array.new(8) { Array.new(8, 'x') }
     init_setup
