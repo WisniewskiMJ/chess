@@ -20,6 +20,8 @@ class Pawn < Piece
     moves
   end
 
+  private
+
   def move_dirs
     left = @color == :black ? 1 : -1
     right = @color == :white ? 1 : -1
@@ -31,8 +33,6 @@ class Pawn < Piece
     directions << side_attacks(right) if attack_possible?(right)
     directions
   end
-
-  # private
 
   def at_start_row?
     return true if @color == :black && @pos[0] == 1

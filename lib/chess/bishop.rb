@@ -3,6 +3,8 @@
 class Bishop < Piece
   include Slideable
 
+  private
+
   def set_color
     (@pos[0]).zero? ? :black : :white
   end
