@@ -38,6 +38,7 @@ class Cursor
   def initialize(cursor_pos, board)
     @cursor_pos = cursor_pos
     @board = board
+    @selected = false
   end
 
   def get_input
@@ -86,24 +87,28 @@ class Cursor
 
   def handle_key(key)
     case key
-      when :left, :right, :up, :down
-        update_pos(MOVES[key])
-      when :return, :space
-        @cursor_pos
-      when :ctrl_c
-        Process.exit(0)
+    when :left, :right, :up, :down
+      update_pos(MOVES[key])
+    when :return, :space
+      toggle_selected
+      @cursor_pos
+    when :ctrl_c
+      Process.exit(0)
     end
   end
 
   def update_pos(diff)
     new_cursor_pos = @cursor_pos.dup
     new_cursor_pos[0] += diff[0]
-    new_cursor_pos[1] += diff[1] 
+    new_cursor_pos[1] += diff[1]
     if @board.on_chessboard?(new_cursor_pos)
-      @cursor_pos = new_cursor_pos 
+      @cursor_pos = new_cursor_pos
     else
       puts "You can't move outside chessboard"
     end
   end
 
+  def toggle_selected
+    @selected = !@selected
+  end
 end

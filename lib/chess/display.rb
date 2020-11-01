@@ -7,7 +7,7 @@ class Display
   end
 
   def run
-    while true
+    loop do
       render
       @cursor.get_input
     end

@@ -41,6 +41,30 @@ class Board
     self[pos] = piece
   end
 
+  def move_piece(start_pos, end_pos)
+    raise 'No piece at starting position' if !on_chessboard?(start_pos) || self[start_pos].nil?
+    if !self[start_pos].valid_moves.include?(end_pos)
+      raise "Can't move to end position"
+    end
+
+    piece = self[start_pos]
+    self[start_pos] = nil
+    self[end_pos] = piece
+    piece.pos = end_pos
+  end
+
+  def move_piece!(start_pos, end_pos)
+    raise 'No piece at starting position' if !on_chessboard?(start_pos) || self[start_pos].nil?
+    if !on_chessboard?(end_pos) || !valid_target?(end_pos, self[start_pos].color) || !self[start_pos].moves.include?(end_pos)
+      raise "Can't move to end position"
+    end
+
+    piece = self[start_pos]
+    self[start_pos] = nil
+    self[end_pos] = piece
+    piece.pos = end_pos
+  end
+
   def pieces
     pieces = []
     (0..7).each do |x|
@@ -58,13 +82,36 @@ class Board
     true
   end
 
-  def move_piece(start_pos, end_pos)
-    raise 'No piece at starting position' if !on_chessboard?(start_pos) || self[start_pos].nil?
-    raise "Can't move to end position" if !on_chessboard?(end_pos) || !self[end_pos].nil?
+  def valid_target?(pos, color)
+    if !self[pos].is_a?(Piece)
+      true
+    else
+      self[pos].color != color
+    end
+  end
 
-    piece = self[start_pos]
-    self[start_pos] = nil
-    self[end_pos] = piece
-    piece.pos = end_pos
+  def in_check?(color)
+    king_position = find_king(color)
+    rows.flatten.each do |field|
+      return true if field.is_a?(Piece) && field.moves.include?(king_position) && field.color != color
+    end
+    false
+  end
+
+  def checkmate?(color)
+    pieces.any? do |piece|
+      piece.valid_moves.length > 0 && piece.color == color
+    end
+  end
+
+  def find_king(color)
+    rows.flatten.each do |field|
+      return field.pos if field.is_a?(King) && field.color == color
+    end
+  end
+
+  def board_dup
+    serialized_board = Marshal.dump(self)
+    Marshal.load(serialized_board)
   end
 end

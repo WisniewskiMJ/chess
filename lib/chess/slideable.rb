@@ -23,13 +23,18 @@ module Slideable
   end
 
   def stretch(move)
-    line = [move]
-    step_x = move[0] - @pos[0]
-    step_y = move[1] - @pos[1]
-    next_step = stretch_next_step(line, step_x, step_y)
-    while @board.on_chessboard?(next_step)
-      line << next_step
+    if @board.on_chessboard?(move) && @board.valid_target?(move, @color)
+      line = [move]
+      step_x = move[0] - @pos[0]
+      step_y = move[1] - @pos[1]
       next_step = stretch_next_step(line, step_x, step_y)
+      while @board.on_chessboard?(next_step) && @board.valid_target?(next_step, @color)
+        line << next_step
+        break if @board[next_step].is_a?(Piece)
+      next_step = stretch_next_step(line, step_x, step_y)
+      end
+    else
+      line = []
     end
     line
   end

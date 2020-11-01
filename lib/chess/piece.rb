@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'board'
-
 class Piece
   attr_accessor :pos
   attr_reader :board, :color, :symbol
@@ -11,6 +9,16 @@ class Piece
     @board = board
     @color = set_color
     @symbol = set_symbol
+  end
+
+  def valid_moves
+    moves.select {|move| @board.on_chessboard?(move) && @board.valid_target?(move, @color) && !move_into_check?(move)}
+  end
+
+  def move_into_check?(move)
+    dupped_board = @board.board_dup
+    dupped_board.move_piece!(@pos, move)
+    dupped_board.in_check?(@color)
   end
 
   private
