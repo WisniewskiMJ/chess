@@ -75,19 +75,21 @@ class Board
     pieces
   end
 
-  # not in diagram
   def on_chessboard?(pos)
     return false if pos[0].negative? || pos [0] > 7 || pos[1].negative? || pos[1] > 7
-
     true
   end
 
   def valid_target?(pos, color)
-    if !self[pos].is_a?(Piece)
-      true
-    else
-      self[pos].color != color
-    end
+    empty_field?(pos) || attack?(pos, color)
+  end
+
+  def empty_field?(pos)
+    !self[pos].is_a?(Piece)
+  end
+
+  def attack?(pos, color)
+    self[pos].is_a?(Piece) && self[pos].color != color
   end
 
   def in_check?(color)
@@ -99,7 +101,8 @@ class Board
   end
 
   def checkmate?(color)
-    pieces.any? do |piece|
+    dupped_board = board_dup
+    dupped_board.pieces.any? do |piece|
       piece.valid_moves.length > 0 && piece.color == color
     end
   end
