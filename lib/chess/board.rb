@@ -42,24 +42,22 @@ class Board
   end
 
   def move_piece(start_pos, end_pos)
-    raise 'No piece at starting position' if !on_chessboard?(start_pos) || self[start_pos].nil?
-    if !self[start_pos].valid_moves.include?(end_pos)
-      raise "Can't move to end position"
-    end
-
     piece = self[start_pos]
+    raise 'Invalid start position' if !valid_start_position?(start_pos)
+    raise 'Invalid target' if !valid_target?(end_pos, piece.color)
+    raise 'Piece can not move here' if !piece.valid_moves.include?(end_pos)
+
     self[start_pos] = nil
     self[end_pos] = piece
     piece.pos = end_pos
   end
 
   def move_piece!(start_pos, end_pos)
-    raise 'No piece at starting position' if !on_chessboard?(start_pos) || self[start_pos].nil?
-    if !on_chessboard?(end_pos) || !valid_target?(end_pos, self[start_pos].color) || !self[start_pos].moves.include?(end_pos)
-      raise "Can't move to end position"
-    end
-
     piece = self[start_pos]
+    raise 'Invalid start position' if !valid_start_position?(start_pos)
+    raise 'Invalid target' if !valid_target?(end_pos, piece.color)
+    raise 'Piece can not move here' if !piece.moves.include?(end_pos)
+
     self[start_pos] = nil
     self[end_pos] = piece
     piece.pos = end_pos
@@ -80,8 +78,12 @@ class Board
     true
   end
 
+  def valid_start_position?(pos)
+    on_chessboard?(pos) && !self[pos].nil?
+  end
+
   def valid_target?(pos, color)
-    empty_field?(pos) || attack?(pos, color)
+    on_chessboard?(pos) && (empty_field?(pos) || attack?(pos, color))
   end
 
   def empty_field?(pos)

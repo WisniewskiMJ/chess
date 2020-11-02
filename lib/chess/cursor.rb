@@ -89,6 +89,7 @@ class Cursor
     case key
     when :left, :right, :up, :down
       update_pos(MOVES[key])
+      nil
     when :return, :space
       toggle_selected
       @cursor_pos
@@ -109,6 +110,10 @@ class Cursor
   end
 
   def toggle_selected
-    @selected = !@selected
+    if @board[@cursor_pos].is_a?(Piece) && @selected == false
+      @selected = true
+    elsif !@board[cursor_pos].is_a?(Piece) && @selected == true
+      @selected = false
+    end
   end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Display
+  attr_reader :cursor
+
   def initialize(board)
     @board = board
     @cursor = Cursor.new([0, 0], board)
