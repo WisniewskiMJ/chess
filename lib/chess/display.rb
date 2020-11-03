@@ -8,14 +8,8 @@ class Display
     @cursor = Cursor.new([0, 0], board)
   end
 
-  def run
-    loop do
-      render
-      @cursor.get_input
-    end
-  end
-
   def render
+    puts
     puts
     @board.rows.each_with_index do |row, x|
       print '     '
@@ -40,6 +34,7 @@ class Display
       end
       puts
     end
+    puts
     puts
     nil
   end

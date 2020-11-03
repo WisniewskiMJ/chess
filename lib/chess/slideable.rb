@@ -26,13 +26,15 @@ module Slideable
     if @board.on_chessboard?(move) && @board.valid_target?(move, @color)
       line = [move]
       return line if @board.attack?(move, @color)
+
       step_x = move[0] - @pos[0]
       step_y = move[1] - @pos[1]
       next_step = stretch_next_step(line, step_x, step_y)
       while @board.on_chessboard?(next_step) && @board.valid_target?(next_step, @color)
         line << next_step
         break if @board.attack?(next_step, @color)
-      next_step = stretch_next_step(line, step_x, step_y)
+
+        next_step = stretch_next_step(line, step_x, step_y)
       end
     else
       line = []

@@ -41,11 +41,11 @@ class Board
     self[pos] = piece
   end
 
-  def move_piece(start_pos, end_pos)
+  def move_piece(start_pos, end_pos, color)
     piece = self[start_pos]
-    raise 'Invalid start position' if !valid_start_position?(start_pos)
-    raise 'Invalid target' if !valid_target?(end_pos, piece.color)
-    raise 'Piece can not move here' if !piece.valid_moves.include?(end_pos)
+    raise 'Invalid start position' unless valid_start_position?(start_pos, color)
+    raise 'Invalid target' unless valid_target?(end_pos, piece.color)
+    raise 'Piece can not move here' unless piece.valid_moves.include?(end_pos)
 
     self[start_pos] = nil
     self[end_pos] = piece
@@ -54,9 +54,9 @@ class Board
 
   def move_piece!(start_pos, end_pos)
     piece = self[start_pos]
-    raise 'Invalid start position' if !valid_start_position?(start_pos)
-    raise 'Invalid target' if !valid_target?(end_pos, piece.color)
-    raise 'Piece can not move here' if !piece.moves.include?(end_pos)
+    raise 'Invalid start position' unless valid_start_position?(start_pos, piece.color)
+    raise 'Invalid target' unless valid_target?(end_pos, piece.color)
+    raise 'Piece can not move here' unless piece.moves.include?(end_pos)
 
     self[start_pos] = nil
     self[end_pos] = piece
@@ -75,11 +75,12 @@ class Board
 
   def on_chessboard?(pos)
     return false if pos[0].negative? || pos [0] > 7 || pos[1].negative? || pos[1] > 7
+
     true
   end
 
-  def valid_start_position?(pos)
-    on_chessboard?(pos) && !self[pos].nil?
+  def valid_start_position?(pos, color = :white)
+    on_chessboard?(pos) && !self[pos].nil? && self[pos].color == color
   end
 
   def valid_target?(pos, color)
@@ -105,7 +106,7 @@ class Board
   def checkmate?(color)
     dupped_board = board_dup
     dupped_board.pieces.any? do |piece|
-      piece.valid_moves.length > 0 && piece.color == color
+      !piece.valid_moves.length.empty? && piece.color == color
     end
   end
 

@@ -12,7 +12,7 @@ class Piece
   end
 
   def valid_moves
-    moves.select {|move| @board.on_chessboard?(move) && @board.valid_target?(move, @color) && !move_into_check?(move)}
+    moves.select { |move| @board.on_chessboard?(move) && @board.valid_target?(move, @color) && !move_into_check?(move) }
   end
 
   def move_into_check?(move)
