@@ -12,8 +12,13 @@ class Knight < Piece
   end
 
   def move_diffs
-    step_x = 2
-    step_y = 1
-    [step_x, step_y]
+    [[1, 2],
+     [1, -2],
+     [-1, 2],
+     [-1, -2],
+     [2, 1],
+     [2, -1],
+     [-2, 1],
+     [-2, -1]]
   end
 end

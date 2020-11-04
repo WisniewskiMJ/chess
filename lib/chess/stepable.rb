@@ -3,17 +3,13 @@
 module Stepable
   include Movable
 
-  private
-
-  def move_dirs
-    step_directions
-  end
-
-  def step_directions
-    move_permutations.reject { |permutation| permutation[1] == permutation[3] }
-  end
-
-  def move_diffs
-    raise NotImplementedError
+  def moves
+    moves = []
+    move_diffs.each do |diff|
+      move_x = @pos[0] + diff[0]
+      move_y = @pos[1] + diff[1]
+      moves << [move_x, move_y]
+    end
+    moves
   end
 end

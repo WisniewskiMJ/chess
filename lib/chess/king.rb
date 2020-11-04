@@ -12,8 +12,13 @@ class King < Piece
   end
 
   def move_diffs
-    step_x = 1
-    step_y = 1
-    [step_x, step_y]
+    [[0, 1],
+     [0, -1],
+     [1, 0],
+     [-1, 0],
+     [1, 1],
+     [-1, 1],
+     [1, -1],
+     [-1, -1]]
   end
 end
