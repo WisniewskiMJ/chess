@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Stepable
-  include Movable
 
   def moves
     moves = []

@@ -1,24 +1,21 @@
 # frozen_string_literal: true
 
-require_relative 'movable'
-
 module Slideable
-  include Movable
-
   def moves
     directions = []
-    (0...move_dirs.length).each do |idx|
-      directions << move(idx) if move(idx) != @pos
+    move_dirs.each do |dir|
+      move_x = @pos[0] + dir[0]
+      move_y = @pos[1] + dir[1]
+      directions << [move_x, move_y]
     end
-    directions = directions.uniq
     stretch_moves(directions)
   end
 
   private
 
-  def stretch_moves(moves)
+  def stretch_moves(directions)
     stretched = []
-    moves.each { |mov| stretched += stretch(mov) }
+    directions.each { |dir| stretched += stretch(dir) }
     stretched
   end
 
@@ -46,22 +43,22 @@ module Slideable
     [line.last[0] + step_x, line.last[1] + step_y]
   end
 
-  def move_diffs
-    step_range = 1
-    zero_horizontal_step = 0
-    [step_range, zero_horizontal_step]
-  end
-
   def move_dirs
     raise NotImplementedError
   end
 
   def diagonal_dirs
-    move_permutations.select { |permutation| permutation[1] == permutation[3] }
+    [[1, 1],
+     [1, -1],
+     [-1, 1],
+     [-1, -1]]
   end
 
   def horizontal_dirs
-    move_permutations.reject { |permutation| permutation[1] == permutation[3] }
+    [[0, 1],
+     [0, -1],
+     [1, 0],
+     [-1, 0]]
   end
 
   def both_dirs
