@@ -52,7 +52,7 @@ class Game
 end
 
 if __FILE__ == $PROGRAM_NAME
-  load '../chess.rb'
+  load './lib/chess.rb'
   game = Game.new
   game.play
 end
